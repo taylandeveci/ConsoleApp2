@@ -16,47 +16,47 @@ namespace ConsoleApp2
             while (true)
             {
 
-                Console.WriteLine("1 - Veri Getir (GET)");
-                Console.WriteLine("2 - Veri Ekle (POST)");
-                Console.WriteLine("3 - Veri Güncelle (PUT)");
-                Console.WriteLine("4- Veri Sil (DELETE)");
-                Console.Write("Seçim (1/2/3/4): ");
+                Console.WriteLine("1 - Fetch Data (GET)");
+                Console.WriteLine("2 - Add Data (POST)");
+                Console.WriteLine("3 - Update Data (PUT)");
+                Console.WriteLine("4- Delete Data (DELETE)");
+                Console.Write("Choice (1/2/3/4): ");
                 var choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Hangi veri türü getirilsin? (pokemon/move/owner/country/review/reviewer/category): ");
+                        Console.Write("Which data type should be fetched? (pokemon/move/owner/country/review/reviewer/category): ");
                         string type = Console.ReadLine();
                         await FetchAndPrintData(type);
                         break;
 
                     case "2":
-                        Console.Write("Hangi türde veri eklemek istiyorsunuz? (pokemon/move/owner/country/review/reviewer/category): ");
+                        Console.Write("What type of data do you want to add? (pokemon/move/owner/country/review/reviewer/category): ");
                         string postType = Console.ReadLine();
                         await PostData(postType);
                         await PostData(postType);
                         break;
 
                     case "3":
-                        Console.Write("Hangi türde veri güncellenecek? (pokemon/move/owner/country/review/reviewer/category): ");
+                        Console.Write("What type of data will be updated? (pokemon/move/owner/country/review/reviewer/category): ");
                         string putType = Console.ReadLine();
                         await PutData(putType);
                         break;
 
                     case "4":
-                        Console.Write("Hangi türde veri silinecek? (pokemon/move/owner/country/review/reviewer/category): ");
+                        Console.Write("What type of data will be deleted? (pokemon/move/owner/country/review/reviewer/category): ");
                         string deleteType = Console.ReadLine();
                         await DeleteData(deleteType);
                         break;
 
 
                     default:
-                        Console.WriteLine("Geçersiz seçim.");
+                        Console.WriteLine("Invalid selection.");
                         break;
                 }
 
-                Console.WriteLine("Devam etmek için bir tuşa basın...");
+                Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
         }
@@ -127,12 +127,12 @@ namespace ConsoleApp2
                 }
                 else
                 {
-                    Console.WriteLine($"API isteği başarısız: {response.StatusCode}");
+                    Console.WriteLine($"API request failed: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
@@ -162,14 +162,14 @@ namespace ConsoleApp2
                     await PutCategory();
                     break;
                 default:
-                    Console.WriteLine("Bu tür için PUT desteği henüz yok.");
+                    Console.WriteLine("There is no PUT support for this type yet.");
                     break;
             }
         }
 
         static async Task DeleteData(string type)
         {
-            Console.Write("Silinecek ID: ");
+            Console.Write("ID to be deleted: ");
             int id = int.Parse(Console.ReadLine());
 
             string url = $"https://localhost:7295/api/{type}/{id}";
@@ -185,16 +185,16 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.DeleteAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine($"{type} başarıyla silindi.");
+                    Console.WriteLine($"{type} successfully deleted.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
@@ -225,7 +225,7 @@ namespace ConsoleApp2
                     break;
 
                 default:
-                    Console.WriteLine("Geçersiz POST türü.");
+                    Console.WriteLine("Invalid POST type.");
                     break;
             }
         }
@@ -233,13 +233,13 @@ namespace ConsoleApp2
 
         static async Task PutReview()
         {
-            Console.Write("Güncellenecek Review ID: ");
+            Console.Write("Review ID to be updated: ");
             int reviewId = int.Parse(Console.ReadLine());
-            Console.Write("Yeni Başlık: ");
+            Console.Write("New Title: ");
             string title = Console.ReadLine();
-            Console.Write("Yeni Metin: ");
+            Console.Write("New Text: ");
             string text = Console.ReadLine();
-            Console.Write("Yeni Puan (1–5): ");
+            Console.Write("New Rating (1–5): ");
             int rating = int.Parse(Console.ReadLine());
 
             var updatedReview = new ReviewDto
@@ -256,11 +256,11 @@ namespace ConsoleApp2
 
         static async Task PutReviewer()
         {
-            Console.Write("Güncellenecek Reviewer ID: ");
+            Console.Write("Reviewer ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Yeni Ad: ");
+            Console.Write("New name: ");
             string firstName = Console.ReadLine();
-            Console.Write("Yeni Soyad: ");
+            Console.Write("New last name: ");
             string lastName = Console.ReadLine();
 
             var reviewer = new ReviewerDto { Id = id, FirstName = firstName, LastName = lastName };
@@ -270,9 +270,9 @@ namespace ConsoleApp2
 
         static async Task PutCategory()
         {
-            Console.Write("Güncellenecek Category ID: ");
+            Console.Write("Category ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Yeni İsim: ");
+            Console.Write("New Name: ");
             string name = Console.ReadLine();
 
             var category = new CategoryDto { Id = id, Name = name };
@@ -282,9 +282,9 @@ namespace ConsoleApp2
 
         static async Task PutCountry()
         {
-            Console.Write("Güncellenecek Country ID: ");
+            Console.Write("Country ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Yeni İsim: ");
+            Console.Write("New name: ");
             string name = Console.ReadLine();
 
             var country = new CountryDto { Id = id, Name = name };
@@ -294,13 +294,13 @@ namespace ConsoleApp2
 
         static async Task PutOwner()
         {
-            Console.Write("Güncellenecek Owner ID: ");
+            Console.Write("Owner ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Yeni Ad: ");
+            Console.Write("New name: ");
             string firstName = Console.ReadLine();
-            Console.Write("Yeni Soyad: ");
+            Console.Write("New lastname: ");
             string lastName = Console.ReadLine();
-            Console.Write("Yeni Gym: ");
+            Console.Write("New Gym: ");
             string gym = Console.ReadLine();
 
             var owner = new OwnerDto { Id = id, FirstName = firstName, LastName = lastName, Gym = gym };
@@ -310,19 +310,19 @@ namespace ConsoleApp2
 
         static async Task PutMove()
         {
-            Console.Write("Güncellenecek Move ID: ");
+            Console.Write("Move ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
 
-            Console.Write("Yeni Ad: ");
+            Console.Write("New Name: ");
             string name = Console.ReadLine();
 
-            Console.Write("Yeni Tip: ");
+            Console.Write("New type: ");
             string type = Console.ReadLine();
 
-            Console.Write("Yeni Güç: ");
+            Console.Write("New Power: ");
             int power = int.Parse(Console.ReadLine());
 
-            Console.Write("Yeni İsabet: ");
+            Console.Write("New accuracy: ");
             int accuracy = int.Parse(Console.ReadLine());
 
             Console.Write("Pokemon ID: ");
@@ -345,11 +345,11 @@ namespace ConsoleApp2
 
         static async Task PutPokemon()
         {
-            Console.Write("Güncellenecek Pokemon ID: ");
+            Console.Write("Pokemon ID to be updated: ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Yeni Ad: ");
+            Console.Write("New name: ");
             string name = Console.ReadLine();
-            Console.Write("Yeni Doğum Tarihi (yyyy-MM-dd): ");
+            Console.Write("New birthdate (yyyy-MM-dd): ");
             DateTime birthDate = DateTime.Parse(Console.ReadLine());
 
             var pokemon = new PokemonDto { Id = id, Name = name, BirthDate = birthDate };
@@ -372,19 +372,19 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.PutAsync(url, content);
 
                 if (response.IsSuccessStatusCode)
-                    Console.WriteLine($" {entityName} başarıyla güncellendi.");
+                    Console.WriteLine($" {entityName} successfully updated.");
                 else
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
         static async Task PostCategory()
         {
-            Console.Write("Kategori adı: ");
+            Console.Write("Category name: ");
             string name = Console.ReadLine();
 
             var category = new CategoryDto { Name = name };
@@ -395,9 +395,9 @@ namespace ConsoleApp2
 
         static async Task PostReviewer()
         {
-            Console.Write("Reviewer adı: ");
+            Console.Write("Reviewer name: ");
             string firstName = Console.ReadLine();
-            Console.Write("Reviewer soyadı: ");
+            Console.Write("Reviewer last name: ");
             string lastName = Console.ReadLine();
             var reviewer = new ReviewerDto
             {
@@ -410,13 +410,13 @@ namespace ConsoleApp2
 
         static async Task PostReview()
         {
-            Console.Write("Başlık: ");
+            Console.Write("Title: ");
             string title = Console.ReadLine();
 
-            Console.Write("Metin: ");
+            Console.Write("Text: ");
             string text = Console.ReadLine();
 
-            Console.Write("Puan (1–5): ");
+            Console.Write("Rating (1–5): ");
             int rating = int.Parse(Console.ReadLine());
 
             Console.Write("Reviewer ID: ");
@@ -449,13 +449,13 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
                 if (response.IsSuccessStatusCode)
-                    Console.WriteLine("Review başarıyla eklendi.");
+                    Console.WriteLine("Review successfully added.");
                 else
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
@@ -474,16 +474,16 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine($"{entityName} başarıyla eklendi.");
+                    Console.WriteLine($"{entityName} successfully added.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
@@ -491,13 +491,13 @@ namespace ConsoleApp2
         static async Task PostOwner()
         {
             
-            Console.Write("Owner adı: ");
+            Console.Write("Owner name: ");
             string firstName = Console.ReadLine();
 
-            Console.Write("Owner soyadı: ");
+            Console.Write("Owner last name: ");
             string lastName = Console.ReadLine();
 
-            Console.Write("Gym adı: ");
+            Console.Write("Gym name: ");
             string gym = Console.ReadLine();
 
             Console.Write("Country ID: ");
@@ -529,23 +529,23 @@ namespace ConsoleApp2
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Owner başarıyla eklendi.");
+                    Console.WriteLine("Owner successfully added.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
 
         static async Task PostCountry()
         {
-            Console.Write("Country adı: ");
+            Console.Write("Country name: ");
             string name = Console.ReadLine();
             var newCountry = new CountryDto
             {
@@ -564,24 +564,24 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Country başarıyla eklendi.");
+                    Console.WriteLine("Country successfully added.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
         static async Task PostPokemon()
         {
-            Console.Write("Pokemon adı: ");
+            Console.Write("Pokemon name: ");
             string name = Console.ReadLine();
-            Console.Write("Doğum tarihi (yyyy-MM-dd): ");
+            Console.Write("Birthdate (yyyy-MM-dd): ");
             DateTime birthDate = DateTime.Parse(Console.ReadLine());
             Console.Write("Owner ID: ");
             int ownerId = int.Parse(Console.ReadLine());
@@ -592,7 +592,7 @@ namespace ConsoleApp2
                 Moves = new List<MoveDto>()
             };
 
-            Console.Write("Kategori ID: ");
+            Console.Write("Category ID: ");
             int categoryId = int.Parse(Console.ReadLine());
 
             string url = $"https://localhost:7295/api/pokemon?ownerId={ownerId}&catId={categoryId}";
@@ -609,16 +609,16 @@ namespace ConsoleApp2
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Pokemon başarıyla eklendi.");
+                    Console.WriteLine("Pokemon successfully added.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
@@ -626,16 +626,16 @@ namespace ConsoleApp2
         static async Task PostMove()
         {
             // Kullanıcıdan veri al
-            Console.Write("Move adı: ");
+            Console.Write("Move name: ");
             string name = Console.ReadLine();
 
-            Console.Write("Move tipi: ");
+            Console.Write("Move type: ");
             string type = Console.ReadLine();
 
-            Console.Write("Güç (power): ");
+            Console.Write("Power: ");
             int power = int.Parse(Console.ReadLine());
 
-            Console.Write("Isabet oranı (accuracy): ");
+            Console.Write("Accuracy: ");
             int accuracy = int.Parse(Console.ReadLine());
 
             Console.Write("Pokemon ID: ");
@@ -668,16 +668,16 @@ namespace ConsoleApp2
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Move başarıyla eklendi.");
+                    Console.WriteLine("Move successfully added.");
                 }
                 else
                 {
-                    Console.WriteLine($"Hata: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+                    Console.WriteLine($"Error: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
 
